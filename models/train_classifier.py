@@ -27,6 +27,11 @@ stop_words = stopwords.words('english')
 lemmatizer = WordNetLemmatizer()
 
 def load_data(database_filepath):
+    """
+    Load data from database_filepath and
+    return X, Y and category_names
+    """
+
     # load data from database
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('Message', engine)
@@ -36,51 +41,67 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 def tokenize(text):
+    """
+    Tokenize the input text by normalizing, removing punctuations,
+    lemmatizing and removing stop words
+    """
     sents = sent_tokenize(text)
     tokens = []
     for sent in sents:
         # normalize case and remove punctuation
         text = re.sub(r"[^a-zA-Z0-9]", " ", sent.lower())
-    
+
         # tokenize text
         work_tokens = word_tokenize(text)
-    
+
         # lemmatize and remove stop words
         sent_tokens = [lemmatizer.lemmatize(word, pos='v') for word in work_tokens if word not in stop_words]
-        
+
         # stemming
         sent_tokens = [PorterStemmer().stem(w) for w in sent_tokens]
-        
+
         tokens = tokens + sent_tokens
 
     return tokens
 
 
 def build_model():
+    """
+    Build a machine learning pipeline using
+    CountVectorizer, TfidfTransformer, MultiOutputClassifier with RandomForestClassifier
+    """
     # try RandomForestClassifier
-    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize, ngram_range=(1,2))), 
+    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize, ngram_range=(1,1))),
                      ('tfidf', TfidfTransformer()),
-                     ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=100)))
+                     ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10)))
                     ])
     return pipeline
 
-
 def evaluate_model(model, X_test, Y_test, category_names):
-    y_pred = model.predict(X_test)    
+    """
+    Evaluate the model using the given X_test and Y_test
+    """
+
+    y_pred = model.predict(X_test)
 
     for i, category_name in enumerate(category_names):
+        # print the category name, f1 score, precision and recall
         print(category_name)
         print(classification_report(Y_test[category_name], y_pred[:,i]))
 
 
 def save_model(model, model_filepath):
-    # Open the file to save as pkl file
+    """
+    Save the model as a pkl file specified by model_filepath
+    """
+
+    # open the file to save as pkl file
     my_pipeline_model_pkl = open(model_filepath, 'wb')
-    
-    # Dump the model with Pickle
+
+    # dump the model with Pickle
     pickle.dump(model, my_pipeline_model_pkl)
 
-    # Close the pickle instances
+    # close the pickle instances
     my_pipeline_model_pkl.close()
 
 
@@ -90,13 +111,13 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-        
+
         print('Building model...')
         model = build_model()
-        
+
         print('Training model...')
         model.fit(X_train, Y_train)
-        
+
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
 
