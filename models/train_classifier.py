@@ -77,6 +77,25 @@ def build_model():
                     ])
     return pipeline
 
+
+def find_best_model(model, X_train, y_train):
+    """
+    Use GridSearchCV to find the best parameters for the model
+    """
+
+    parameters = {
+        'vect__ngram_range': [(1, 1), (1, 2)],
+        'clf__estimator__n_estimators': [10, 100]
+    }
+
+    cv = GridSearchCV(pipeline, param_grid=parameters)
+    cv.fit(X_train, y_train)
+
+    print('best paramters' + cv.best_params_)
+
+    return cv
+
+
 def evaluate_model(model, X_test, Y_test, category_names):
     """
     Evaluate the model using the given X_test and Y_test
@@ -117,6 +136,9 @@ def main():
 
         print('Training model...')
         model.fit(X_train, Y_train)
+
+        print('GridCVSearch...')
+        model = find_best_model(model, X_train, Y_train)
 
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
