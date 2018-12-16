@@ -13,7 +13,8 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
 
-app = Flask(__name__)
+application = Flask(__name__)
+app = application
 
 def tokenize(text):
     tokens = word_tokenize(text)
