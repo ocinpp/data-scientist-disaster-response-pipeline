@@ -52,10 +52,10 @@ def tokenize(text):
         text = re.sub(r"[^a-zA-Z0-9]", " ", sent.lower())
 
         # tokenize text
-        work_tokens = word_tokenize(text)
+        word_tokens = word_tokenize(text)
 
         # lemmatize and remove stop words
-        sent_tokens = [lemmatizer.lemmatize(word, pos='v') for word in work_tokens if word not in stop_words]
+        sent_tokens = [lemmatizer.lemmatize(word, pos='v') for word in word_tokens if word not in stop_words]
 
         # stemming
         sent_tokens = [PorterStemmer().stem(w) for w in sent_tokens]
@@ -88,10 +88,11 @@ def find_best_model(model, X_train, y_train):
         'clf__estimator__n_estimators': [10, 100]
     }
 
-    cv = GridSearchCV(pipeline, param_grid=parameters)
+    cv = GridSearchCV(model, param_grid=parameters)
     cv.fit(X_train, y_train)
 
-    print('best paramters' + cv.best_params_)
+    print('best paramters:')
+    print(cv.best_params_)
 
     return cv
 
