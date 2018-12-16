@@ -24,3 +24,22 @@ The project is divided into 3 parts.
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
+
+
+## Screenshots
+
+### Main Screen
+
+![](/images/main.png)
+
+### Distribution of Categories (Top 10 and Last 10)
+
+![](/images/chart2.png)
+
+### Message Classification (With Result)
+
+![](/images/classify.png)
+
+### Message Classification (No Result)
+
+![](/images/classify-none.png)
