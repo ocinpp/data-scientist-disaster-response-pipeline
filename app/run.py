@@ -8,6 +8,7 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+from plotly.graph_objs import Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -51,10 +52,12 @@ def index():
     genre_names = pretty_names(list(genre_counts.index))
 
     # sum of different categories
+    cat_counts_all = df.sum(axis=0, numeric_only=True).sort_values(ascending=False).drop(labels=['id'])
+    cat_names_all = pretty_names(cat_counts_all.axes[0].tolist())
+
+    #print(cat_counts_all)
+
     cat_counts_asc = df.sum(axis=0, numeric_only=True).sort_values(ascending=True)
-
-    #print(cat_counts_asc)
-
     cat_counts_asc = cat_counts_asc.drop(labels=['id'])
     cat_counts_asc = cat_counts_asc.head(10)
     cat_names_asc = pretty_names(cat_counts_asc.axes[0].tolist())
@@ -83,6 +86,18 @@ def index():
                 'xaxis': {
                     'title': "Genre"
                 }
+            }
+        },
+        {
+            'data': [
+                Pie(
+                    values=cat_counts_all,
+                    labels=cat_names_all
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Categories'
             }
         },
         {
