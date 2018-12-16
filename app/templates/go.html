@@ -3,22 +3,23 @@
 
 {% block message %}
     <hr />
-    <h4 class="text-center">MESSAGE</h4>
-    <p class="text-center"><i>{{query}}</i></p>
+    <h2 class="text-center">Message</h2>
+    <blockquote class="blockquote">{{query}}<blockquote>
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Result</h1>
-        <ul class="list-group">
-            {% for category, classification in classification_result.items() %}
-                {% if classification == 1 %}
-                    <li class="list-group-item list-group-item-success text-center">{{category.replace('_', ' ').title()}}</li>
-                {% else %}
-                    <li class="list-group-item list-group-item-dark text-center">{{category.replace('_', ' ').title()}}</li>
-                {% endif %}
-            {% endfor %}
-
-        </div>
+    <h2 class="text-center">Result</h2>
+    <div class="text-center">
+        <h3>
+        {% for category, classification in classification_result.items() %}
+            {% if classification == 1 %}
+            <span class="badge badge-danger">{{category.replace('_', ' ').title()}}</span>
+          	<span>{{ classification_ok }}</span>
+            {% endif %}
+        {% endfor %}
+        </h3>
+        {% if classification_count == 0 %}
+            <span>No classification found!</span>
+        {% endif %}
     </div>
-
 {% endblock %}
