@@ -78,3 +78,7 @@ Take the label **water** as an example:
 | avg / total | 0.96 | 0.96 | 0.96 | 5244  |
 
 The recall rate is quite low (0.44). With low recall rate, it means many "positive" are now classified as "negative" and this may lead to missing a lot of disaster information. So, it is better to improve the recall rate so that the false negatives can be reduced.
+
+## Demo
+
+http://disasterresponsepipeline-env.gpmtqpkvp7.ap-northeast-1.elasticbeanstalk.com/
