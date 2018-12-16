@@ -18,6 +18,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.metrics import classification_report
+from sklearn.externals import joblib
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -115,14 +116,8 @@ def save_model(model, model_filepath):
     Save the model as a pkl file specified by model_filepath
     """
 
-    # open the file to save as pkl file
-    my_pipeline_model_pkl = open(model_filepath, 'wb')
-
-    # dump the model with Pickle
-    pickle.dump(model, my_pipeline_model_pkl)
-
-    # close the pickle instances
-    my_pipeline_model_pkl.close()
+    # dump the model to the file path using joblib
+    joblib.dump(model, model_filepath, compress=3)
 
 
 def main():
