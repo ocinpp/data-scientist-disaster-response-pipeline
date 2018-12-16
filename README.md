@@ -25,6 +25,21 @@ The project is divided into 3 parts.
 
 3. Go to http://0.0.0.0:3001/
 
+## Deploying to AWS Beanstalk
+
+To deploy the app to AWS Beanstalk, there are some rules that have to be followed:
+
+- Using **application.py** as the filename and providing a callable application object (the Flask object, in this case) allows Elastic Beanstalk to easily find your application's code
+- The Flask object within **application.py** must be **application**. By assigning **app** to be a reference to **application**, there is no need to rename all **app** to **application**
+- **.ebextensions/python.config** can be used to specify the file that contains the WSGI application. By this way, there is no need to change the application filename to **application.py**
+
+```yaml
+option_settings:
+  aws:elasticbeanstalk:container:python:
+    WSGIPath: app/run.py
+```
+
+To view the logs, we can go to the management console, navigate to **Logs**, and choose **Request Logs**
 
 ## Screenshots
 
