@@ -35,11 +35,11 @@ def pretty_names(name_list):
     return list(map(lambda x: x.replace('_', ' ').title(), name_list))
 
 # load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
+engine = create_engine('sqlite:///data/DisasterResponse.db')
 df = pd.read_sql_table('Message', engine)
 
 # load model
-model = joblib.load("../models/classifier.pkl")
+model = joblib.load("models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
