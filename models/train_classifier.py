@@ -19,6 +19,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.metrics import classification_report
 from sklearn.externals import joblib
+from myutil.my_tokenizer import my_tokenizer
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -26,6 +27,7 @@ nltk.download('wordnet')
 
 stop_words = stopwords.words('english')
 lemmatizer = WordNetLemmatizer()
+tokenizer = my_tokenizer(stop_words, lemmatizer)
 
 def load_data(database_filepath):
     """
@@ -72,7 +74,7 @@ def build_model():
     CountVectorizer, TfidfTransformer, MultiOutputClassifier with RandomForestClassifier
     """
     # try RandomForestClassifier
-    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize, ngram_range=(1,1))),
+    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenizer.my_tokenize, ngram_range=(1,1))),
                      ('tfidf', TfidfTransformer()),
                      ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10)))
                     ])
