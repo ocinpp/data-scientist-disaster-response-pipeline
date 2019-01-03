@@ -27,7 +27,7 @@ The project is divided into 3 parts.
 
 ## Deploying to AWS Elastic Beanstalk
 
-Create a new EC2 key pair in **EC2 management console** > **Network & ecurity** > **Key Pairs** and download the **.pem** file.
+Create a new EC2 key pair in **EC2 management console** > **Network & Security** > **Key Pairs** and download the **.pem** file.
 
 Change the permission of the **.pem** file. It is required that your private key files are NOT accessible by others.
 
